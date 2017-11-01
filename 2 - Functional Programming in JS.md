@@ -37,3 +37,43 @@ It's especially useful for callbacks, as shown in the following code snippet:
    var drum = new Drum();
    setInterval(drum.goBoom.bind(drum), drum.duration);
 ```
+
+## Function Factories
+_See functional programming practice 1_
+
+Example:
+``` javascript
+const makePowersOf = bindFirstArg(bindFirstArg, Math.pow);
+
+const powersOfThree = makePowersOf(3);
+console.log(powersOfThree(2));
+console.log(powersOfThree(3));
+```
+
+##Partial Application
+This is creating functions for partial applications and currying. There are two ways to accomplish this:
+
+* As a stand-alone function --> `function(func) {...}`
+* As a pollyfill --> `Function.prototype.partial()`
+
+What are pollyfills? Pollyfills are used to augment prototypes with new functions that we can then call to partially apply.
+
+### Partial Application From the Left
+
+This is where JavaScripts `call()` and `apply()` functions.
+
+``` javascript
+Function.prototype.partialApply = function(){
+     var func = this;
+     // binds this to a variable
+     args = Array.prototype.slice.call(arguments);
+     //slices the result of a call function applied to the special arguments object and stores it in a variable.
+     return function(){
+         //returns a function that applies the this article to 
+       return func.apply(this, args.concat(
+         Array.prototype.slice.call(arguments)
+)); };
+};
+```
+
+_See practice one for this in use_
