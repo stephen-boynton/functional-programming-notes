@@ -55,3 +55,30 @@ function num2hex() {
 
 console.log(num2hex(100, 200));
 console.log(num2hex(100, 200, 255, 0, 123));
+
+//====================================================================
+//Sandbox, play with function factories.
+
+//binding first argument
+console.log("=".repeat(50));
+
+function factory(func, a) {
+  return function(b) {
+    return func(a, b);
+  };
+}
+
+function repeatMySelf(num, words) {
+  return words.repeat(num);
+}
+
+function findIndexOf(letter, str) {
+  return str.indexOf(letter);
+}
+
+const findA = factory(findIndexOf, "a");
+const repeat5times = factory(repeatMySelf, 5);
+
+console.log(repeat5times("Play it again, Sam!"));
+console.log(findA("Wot is happening?"));
+console.log(findA("It is my understanding..."));
