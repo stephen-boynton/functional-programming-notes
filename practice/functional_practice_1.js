@@ -115,3 +115,47 @@ console.log(hexColors(11)); // returns a curried function
 console.log(hexColors(11, 12, 123)); // returns a curried function
 console.log(hexColors(11)(12)(123)); // returns #0b0c7b
 console.log(hexColors(210)(12)(0)); // returns #d20c00
+
+//=============================== Composition ====================
+
+console.log("Composition", "=".repeat(50));
+
+// stringToArray :: String -> [Char]
+function stringToArray(s) {
+  return s.split("");
+}
+// arrayToString :: [Char] -> String
+function arrayToString(a) {
+  return a.join("");
+}
+// nextChar :: Char -> Char
+function nextChar(c) {
+  return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+// previousChar :: Char -> Char
+function previousChar(c) {
+  return String.fromCharCode(c.charCodeAt(0) - 1);
+}
+// higherColorHex :: Char -> Char
+function higherColorHex(c) {
+  return c >= "f" ? "f" : c == "9" ? "a" : nextChar(c);
+}
+// lowerColorHex :: Char -> Char
+function lowerColorHex(c) {
+  return c <= "0" ? "0" : c == "a" ? "9" : previousChar(c);
+}
+// raiseColorHexes :: String -> String
+function raiseColorHexes(arr) {
+  return arr.map(higherColorHex);
+}
+// lowerColorHexes :: String -> String
+function lowerColorHexes(arr) {
+  return arr.map(lowerColorHex);
+}
+
+var lighterColor = arrayToString
+  .compose(raiseColorHexes)
+  .compose(stringToArray);
+var darkerColor = arrayToString.compose(lowerColorHexes).compose(stringToArray);
+console.log(lighterColor("af0189")); // Returns: 'bf129a'
+console.log(darkerColor("af0189")); // Returns: '9e0078'

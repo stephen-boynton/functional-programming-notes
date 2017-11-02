@@ -137,3 +137,44 @@ var reds = function(g,b){return hexColors(255)(g)(b)};
    console.log(greens(11, 12)) // returns #0bff0c
    console.log(blues(11, 12))  // returns #0b0cff
 ```
+
+Both currying and partial application are not just for reusable code, but are also used for the larger idea of "composition".
+
+## Function Composition
+
+In functional programing we want everything to be a function. Preferrably, we want all functions to be unary functions, meaning that they take only a single argument.
+
+### Functions as building blocks
+
+Classic example with math's `f(g(x))`.
+
+``` javascript
+
+   var compose = function(f, g) {
+     return function(x) {
+         return f(g(x));
+  };
+};
+```
+
+This is the process of building functions. And is coincidentally, very confusing...
+
+``` javascript
+
+Function.prototype.compose = function(prevFunc) {
+     var nextFunc = this;
+     return function() {
+       return nextFunc.call(this,prevFunc.apply(this,arguments));
+     }
+}
+```
+
+This is our polyfill compose function. It takes the previous function created, applies the _this_ key word to `nextFunc` and returns a function that calls `nextFunc` with _this_ and applying the previous function's arguments? I think.
+
+Functions are called from right to left. Meaning that the final argument in a chain is called first and then is run backwards. You can reverse this by switching the `prevFunc` and `nextFunc` arguments above, but this is called sequence instead of composition.
+
+>To say that less code is better is missing the point. Code is more maintainable when the effective instructions are more concise. If you reduce the number of characters on the screen without changing
+the effective instructions carried out, this has the complete opposite effect—code becomes harder to understand, and decidedly less maintainable; for example, when we use nested ternary operators,
+or we chain several commands together on a single line. These approaches reduce the amount of 'code on the screen', but they don't reduce the number of steps actually being specified by that code. So the effect is to obfuscate and make the code harder to understand. The kind of conciseness that makes code easier to maintain is that which effectively reduces the specified instructions (for example, by using a simpler algorithm that accomplishes the same result with fewer and/ or simpler steps), or when we simply replace code with a message, for instance, invoking a third-party library with a well-documented API.
+
+Composition works best with unary functions. The output of the first function is passed on to the second function, and so on.
