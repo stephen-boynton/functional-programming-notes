@@ -108,7 +108,7 @@ Function.prototype.curry = function(numArgs) {
 
 function rgb2hex(r, g, b) {
   // nums2hex is previously defined in this chapter
-  return "#" + nums2hex(r) + nums2hex(g) + nums2hex(b);
+  return "#" + num2hex(r) + num2hex(g) + num2hex(b);
 }
 var hexColors = rgb2hex.curry();
 console.log(hexColors(11)); // returns a curried function

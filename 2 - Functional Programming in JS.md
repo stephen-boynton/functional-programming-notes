@@ -121,4 +121,11 @@ function rgb2hex(r, g, b) {
    console.log(hexColors(210)(12)(0))  // returns #d20c00
   ```
 
-   I think I got this. So, `rgb2hex` takes three arguments and returns the result of # + 3 functions. When `hexColors` is created it applies `curry` to rgb2hex, which has how many arguments? Yep, 3. So, now you can apply one value to a variable to store a function that needs TWO more arguments to execute, 
+   I think I got this. So, `rgb2hex` takes three arguments and returns the result of # + 3 functions. When `hexColors` is created it applies `curry` to rgb2hex, which has how many arguments? Yep, 3. So, now you can apply one execution to a variable to store a function that needs TWO more executions to full execute, or you can provide all three executions and get the result. *Take notice*, however, that if you provide three arguments in the same execution context, it will only count as the one execution and not all three variables that are needed. Look again at `hexColors`:
+
+``` javascript
+return '#' + nums2hex(r) + nums2hex(g) + nums2hex(b);
+```
+
+Three separate function calls, means you must have three separate executions.
+
