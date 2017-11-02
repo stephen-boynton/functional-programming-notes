@@ -13,6 +13,8 @@ Partial Function application - The process of binding values to one or more argu
 
 Currying - Transforming a function with multiple arguments into a function with one argument that returns another function that takes more arguments as needed.
 
+*Whoa! Stop here. Okay, so currying is a lot simpler than it sounds. It's basically what you're doing down below in Function Factories, but is added to the Function object so that you can use it whenever. Now, currying will allow you to fully bind arguments together, that's the difference (I think) between it and the partial binding you'll see later. Continue on!*
+
 ### Function Manipulation
 #### Apply, call, and the this keyword
 
@@ -77,3 +79,46 @@ Function.prototype.partialApply = function(){
 ```
 
 _See practice one for this in use_
+
+### Currying
+
+Oh boy, you got your work cut out for you. Okay, so take a look at this bad boy:
+
+``` javascript
+
+Function.prototype.curry = function (numArgs) {
+     var func = this;
+     // numArgs lets you either input args or define how many their are going to be.
+     numArgs = numArgs || func.length;
+     // recursively acquire the arguments
+     function subCurry(prev) {
+       return function (arg) {
+         var args = prev.concat(arg);
+         if (args.length < numArgs) {
+           // recursive case: we still need more args
+           return subCurry(args);
+         }
+         else {
+           // base case: apply the function
+           return func.apply(this, args);
+} };
+}
+     return subCurry([]);
+   };
+```
+
+This right here is a POLYFILL, a function added to the Function object. In this case it's our Curry function. Basically, it has the ability to take any number of arguments and bind them together.
+
+``` javascript
+function rgb2hex(r, g, b) {
+     // nums2hex is previously defined in this chapter
+     return '#' + nums2hex(r) + nums2hex(g) + nums2hex(b);
+   }
+   var hexColors = rgb2hex.curry();
+   console.log(hexColors(11)) // returns a curried function
+   console.log(hexColors(11,12,123)) // returns a curried function
+   console.log(hexColors(11)(12)(123)) // returns #0b0c7b
+   console.log(hexColors(210)(12)(0))  // returns #d20c00
+  ```
+
+   I think I got this. So, `rgb2hex` takes three arguments and returns the result of # + 3 functions. When `hexColors` is created it applies `curry` to rgb2hex, which has how many arguments? Yep, 3. So, now you can apply one value to a variable to store a function that needs TWO more arguments to execute, 

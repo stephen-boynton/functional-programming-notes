@@ -82,3 +82,36 @@ const repeat5times = factory(repeatMySelf, 5);
 console.log(repeat5times("Play it again, Sam!"));
 console.log(findA("Wot is happening?"));
 console.log(findA("It is my understanding..."));
+
+//================================ Currying ==========================
+
+console.log("Currying", "=".repeat(50));
+
+Function.prototype.curry = function(numArgs) {
+  var func = this;
+  numArgs = numArgs || func.length;
+  // recursively acquire the arguments
+  function subCurry(prev) {
+    return function(arg) {
+      var args = prev.concat(arg);
+      if (args.length < numArgs) {
+        // recursive case: we still need more args
+        return subCurry(args);
+      } else {
+        // base case: apply the function
+        return func.apply(this, args);
+      }
+    };
+  }
+  return subCurry([]);
+};
+
+function rgb2hex(r, g, b) {
+  // nums2hex is previously defined in this chapter
+  return "#" + nums2hex(r) + nums2hex(g) + nums2hex(b);
+}
+var hexColors = rgb2hex.curry();
+console.log(hexColors(11)); // returns a curried function
+console.log(hexColors(11, 12, 123)); // returns a curried function
+console.log(hexColors(11)(12)(123)); // returns #0b0c7b
+console.log(hexColors(210)(12)(0)); // returns #d20c00
