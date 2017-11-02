@@ -88,7 +88,7 @@ Oh boy, you got your work cut out for you. Okay, so take a look at this bad boy:
 
 Function.prototype.curry = function (numArgs) {
      var func = this;
-     // numArgs lets you either input args or define how many their are going to be.
+     // numArgs lets you either input args or define how many there are going to be.
      numArgs = numArgs || func.length;
      // recursively acquire the arguments
      function subCurry(prev) {
