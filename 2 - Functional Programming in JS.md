@@ -127,5 +127,13 @@ function rgb2hex(r, g, b) {
 return '#' + nums2hex(r) + nums2hex(g) + nums2hex(b);
 ```
 
-Three separate function calls, means you must have three separate executions.
+Three separate function calls, means you must have three separate executions. To further demonstrate this, take a look at the following:
 
+``` javascript
+var reds = function(g,b){return hexColors(255)(g)(b)};
+   var greens = function(r,b){return hexColors(r)(255)(b)};
+   var blues  = function(r,g){return hexColors(r)(g)(255)};
+   console.log(reds(11, 12))   // returns #ff0b0c
+   console.log(greens(11, 12)) // returns #0bff0c
+   console.log(blues(11, 12))  // returns #0b0cff
+```
