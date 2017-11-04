@@ -177,4 +177,16 @@ Functions are called from right to left. Meaning that the final argument in a ch
 the effective instructions carried out, this has the complete opposite effect—code becomes harder to understand, and decidedly less maintainable; for example, when we use nested ternary operators,
 or we chain several commands together on a single line. These approaches reduce the amount of 'code on the screen', but they don't reduce the number of steps actually being specified by that code. So the effect is to obfuscate and make the code harder to understand. The kind of conciseness that makes code easier to maintain is that which effectively reduces the specified instructions (for example, by using a simpler algorithm that accomplishes the same result with fewer and/ or simpler steps), or when we simply replace code with a message, for instance, invoking a third-party library with a well-documented API.
 
-Composition works best with unary functions. The output of the first function is passed on to the second function, and so on.
+Composition works best with unary functions. The output of the first function is passed on to the second function, and so on. 
+
+It is common practice to declare what type of input is expected to be input and what type of output the given function will generate. These are called *Type Signatures*. See below:
+
+``` javascript
+// getStringLength :: String -> Int
+  function getStringLength(s){return s.length};
+  // concatDates :: Date -> Date -> [Date]
+  function concatDates(d1,d2){return [d1, d2]};
+  // pureFunc :: (int -> Bool) -> [int] -> [int]
+  pureFunc(func, arr){return arr.filter(func)}
+```
+

@@ -120,6 +120,13 @@ console.log(hexColors(210)(12)(0)); // returns #d20c00
 
 console.log("Composition", "=".repeat(50));
 
+Function.prototype.compose = function(prevFunc) {
+  var nextFunc = this;
+  return function() {
+    return nextFunc.call(this, prevFunc.apply(this, arguments));
+  };
+};
+
 // stringToArray :: String -> [Char]
 function stringToArray(s) {
   return s.split("");
